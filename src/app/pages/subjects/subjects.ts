@@ -16,7 +16,15 @@ export class Subjects implements OnInit {
 
   protected subjectForm: Subject = this.createEmptyForm();
   protected subjects: Subject[] = [];
-  protected teachers: Teacher[] = [];
+  protected teachers: Teacher[] = [
+    {
+      id: 1,
+      name: 'Default Teacher',
+      subject: 'General',
+      phone: '0300-0000000',
+      salary: 0,
+    },
+  ];
 
   constructor(private readonly api: SchoolApiService) {}
 
@@ -124,7 +132,7 @@ export class Subjects implements OnInit {
       subjectName: '',
       subjectCode: '',
       className: '',
-      teacherId: 0,
+      teacherId: 1,
     };
   }
 }

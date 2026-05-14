@@ -16,7 +16,13 @@ export class Attendance implements OnInit {
 
   protected attendanceForm: AttendanceModel = this.createEmptyForm();
   protected attendanceRecords: AttendanceModel[] = [];
-  protected students: Student[] = [];
+  protected students: Student[] = [
+    {
+      id: 1,
+      name: 'Default Student',
+      schoolClassId: 1,
+    },
+  ];
 
   constructor(private readonly api: SchoolApiService) {}
 
@@ -132,7 +138,7 @@ export class Attendance implements OnInit {
   private createEmptyForm(): AttendanceModel {
     return {
       attendanceId: 0,
-      studentId: 0,
+      studentId: 1,
       attendanceDate: new Date().toISOString().slice(0, 10),
       status: 'Present',
     };

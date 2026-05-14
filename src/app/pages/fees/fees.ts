@@ -16,7 +16,13 @@ export class Fees implements OnInit {
 
   protected feeForm: Fee = this.createEmptyForm();
   protected fees: Fee[] = [];
-  protected students: Student[] = [];
+  protected students: Student[] = [
+    {
+      id: 1,
+      name: 'Default Student',
+      schoolClassId: 1,
+    },
+  ];
 
   constructor(private readonly api: SchoolApiService) {}
 
@@ -139,7 +145,7 @@ export class Fees implements OnInit {
   private createEmptyForm(): Fee {
     return {
       id: 0,
-      studentId: 0,
+      studentId: 1,
       amount: 0,
       dueDate: new Date().toISOString().slice(0, 10),
       paidDate: null,

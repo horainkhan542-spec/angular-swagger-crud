@@ -16,7 +16,13 @@ export class Results implements OnInit {
 
   protected resultForm: Result = this.createEmptyForm();
   protected results: Result[] = [];
-  protected students: Student[] = [];
+  protected students: Student[] = [
+    {
+      id: 1,
+      name: 'Default Student',
+      schoolClassId: 1,
+    },
+  ];
 
   constructor(private readonly api: SchoolApiService) {}
 
@@ -140,7 +146,7 @@ export class Results implements OnInit {
   private createEmptyForm(): Result {
     return {
       id: 0,
-      studentId: 0,
+      studentId: 1,
       examId: 1,
       marksObtained: 0,
       grade: 'A',

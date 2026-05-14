@@ -110,7 +110,7 @@ export class Subjects implements OnInit {
   }
 
   private loadTeachers(): void {
-    this.api.getTeachers().subscribe({
+    this.api.ensureTeachers().subscribe({
       next: (teachers) => {
         this.teachers = teachers;
         this.subjectForm.teacherId = teachers[0]?.id ?? 0;

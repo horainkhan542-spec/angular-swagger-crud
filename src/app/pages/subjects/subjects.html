@@ -75,7 +75,9 @@
         <input type="text" name="className" placeholder="Class 1" [(ngModel)]="subjectForm.className" required />
       </label>
 
-      <button type="submit">{{ editingSubjectId ? 'Update Subject' : 'Save Subject' }}</button>
+      <button type="submit">
+        {{ editingSubjectId ? 'Update Subject' : 'Save Subject' }}
+      </button>
     </form>
 
     <div class="subject-list">

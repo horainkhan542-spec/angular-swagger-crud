@@ -128,7 +128,7 @@ export class Fees implements OnInit {
   }
 
   private loadStudents(): void {
-    this.api.getStudents().subscribe({
+    this.api.ensureStudents().subscribe({
       next: (students) => {
         this.students = students;
         this.feeForm.studentId = students[0]?.id ?? 0;

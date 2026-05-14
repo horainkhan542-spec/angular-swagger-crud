@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 export interface SchoolClass {
   id: number;
@@ -106,6 +107,53 @@ export class SchoolApiService {
 
   deleteTeacher(id: number): Observable<void> {
     return this.http.delete<void>(`/api/Teacher/${id}`);
+  }
+
+  ensureTeachers(): Observable<Teacher[]> {
+    return this.getTeachers().pipe(
+      switchMap((teachers) => {
+        if (teachers.length) {
+          return of(teachers);
+        }
+
+        return this.addTeacher({
+          id: 0,
+          name: 'Default Teacher',
+          subject: 'General',
+          phone: '0300-0000000',
+          salary: 0,
+        }).pipe(map((teacher) => [teacher]));
+      }),
+    );
+  }
+
+  ensureStudents(): Observable<Student[]> {
+    return this.getStudents().pipe(
+      switchMap((students) => {
+        if (students.length) {
+          return of(students);
+        }
+
+        return this.getClasses().pipe(
+          switchMap((classes) => {
+            const classRequest: Observable<SchoolClass> = classes.length
+              ? of(classes[0])
+              : this.addClass({ id: 0, className: 'Default Class', section: 'A' });
+
+            return classRequest.pipe(
+              switchMap((schoolClass) =>
+                this.addStudent({
+                  id: 0,
+                  name: 'Default Student',
+                  schoolClassId: schoolClass.id,
+                }),
+              ),
+              map((student) => [student]),
+            );
+          }),
+        );
+      }),
+    );
   }
 
   getSubjects(): Observable<Subject[]> {

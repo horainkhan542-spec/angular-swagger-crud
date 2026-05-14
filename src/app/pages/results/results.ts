@@ -129,7 +129,7 @@ export class Results implements OnInit {
   }
 
   private loadStudents(): void {
-    this.api.getStudents().subscribe({
+    this.api.ensureStudents().subscribe({
       next: (students) => {
         this.students = students;
         this.resultForm.studentId = students[0]?.id ?? 0;

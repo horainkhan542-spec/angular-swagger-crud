@@ -79,7 +79,9 @@
         <input type="text" name="remarks" placeholder="Good" [(ngModel)]="resultForm.remarks" />
       </label>
 
-      <button type="submit">{{ editingResultId ? 'Update Result' : 'Save Result' }}</button>
+      <button type="submit">
+        {{ editingResultId ? 'Update Result' : 'Save Result' }}
+      </button>
     </form>
 
     <div class="result-list">

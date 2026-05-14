@@ -1,0 +1,129 @@
+<section class="subjects-page">
+  <div class="page-header">
+    <div>
+      <p>Subject Management</p>
+      <h1>Subjects</h1>
+    </div>
+
+    <button type="button" (click)="resetForm()">Add Subject</button>
+  </div>
+
+  <div class="summary-grid">
+    <div>
+      <span>Total Subjects</span>
+      <strong>{{ subjects.length }}</strong>
+    </div>
+
+    <div>
+      <span>Teachers Loaded</span>
+      <strong>{{ teachers.length }}</strong>
+    </div>
+
+    <div>
+      <span>Showing</span>
+      <strong>{{ filteredSubjects.length }}</strong>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <p class="empty-state">{{ errorMessage }}</p>
+  }
+
+  <div class="content-grid">
+    <form class="subject-form" (ngSubmit)="saveSubject()">
+      <div class="form-title">
+        <h2>{{ editingSubjectId ? 'Edit Subject' : 'Add Subject' }}</h2>
+
+        @if (editingSubjectId) {
+          <button type="button" class="ghost-button" (click)="resetForm()">Cancel</button>
+        }
+      </div>
+
+      <label>
+        Subject Name
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter subject name"
+          [(ngModel)]="subjectForm.subjectName"
+          required
+        />
+      </label>
+
+      <label>
+        Subject Code
+        <input
+          type="text"
+          name="code"
+          placeholder="SUB-004"
+          [(ngModel)]="subjectForm.subjectCode"
+          required
+        />
+      </label>
+
+      <label>
+        Teacher
+        <select name="teacherId" [(ngModel)]="subjectForm.teacherId">
+          @for (teacher of teachers; track teacher.id) {
+            <option [ngValue]="teacher.id">{{ teacher.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Class Name
+        <input type="text" name="className" placeholder="Class 1" [(ngModel)]="subjectForm.className" required />
+      </label>
+
+      <button type="submit">{{ editingSubjectId ? 'Update Subject' : 'Save Subject' }}</button>
+    </form>
+
+    <div class="subject-list">
+      <div class="list-header">
+        <div>
+          <h2>Subject List</h2>
+          <span>{{ filteredSubjects.length }} records showing</span>
+        </div>
+
+        <input type="search" name="search" placeholder="Search subject" [(ngModel)]="searchTerm" />
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Subject</th>
+              <th>Teacher</th>
+              <th>Class</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (subject of filteredSubjects; track subject.subjectId) {
+              <tr>
+                <td>{{ subject.subjectCode }}</td>
+                <td>{{ subject.subjectName }}</td>
+                <td>{{ getTeacherName(subject.teacherId) }}</td>
+                <td>{{ subject.className }}</td>
+                <td>
+                  <div class="actions">
+                    <button type="button" (click)="editSubject(subject)">Edit</button>
+                    <button type="button" class="danger" (click)="deleteSubject(subject.subjectId)">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5" class="empty-state">No subjects found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,141 @@
+<section class="results-page">
+  <div class="page-header">
+    <div>
+      <p>Result Management</p>
+      <h1>Results</h1>
+    </div>
+
+    <button type="button" (click)="resetForm()">Add Result</button>
+  </div>
+
+  <div class="summary-grid">
+    <div>
+      <span>Total Results</span>
+      <strong>{{ results.length }}</strong>
+    </div>
+
+    <div>
+      <span>Passed</span>
+      <strong>{{ passedResults }}</strong>
+    </div>
+
+    <div>
+      <span>Failed</span>
+      <strong>{{ failedResults }}</strong>
+    </div>
+
+    <div>
+      <span>Average Marks</span>
+      <strong>{{ averageMarks }}</strong>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <p class="empty-state">{{ errorMessage }}</p>
+  }
+
+  <div class="content-grid">
+    <form class="result-form" (ngSubmit)="saveResult()">
+      <div class="form-title">
+        <h2>{{ editingResultId ? 'Edit Result' : 'Add Result' }}</h2>
+
+        @if (editingResultId) {
+          <button type="button" class="ghost-button" (click)="resetForm()">Cancel</button>
+        }
+      </div>
+
+      <label>
+        Student
+        <select name="studentId" [(ngModel)]="resultForm.studentId">
+          @for (student of students; track student.id) {
+            <option [ngValue]="student.id">{{ student.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Exam ID
+        <input type="number" name="examId" placeholder="1" [(ngModel)]="resultForm.examId" required />
+      </label>
+
+      <label>
+        Marks Obtained
+        <input type="number" name="marksObtained" placeholder="85" [(ngModel)]="resultForm.marksObtained" required />
+      </label>
+
+      <label>
+        Grade
+        <select name="grade" [(ngModel)]="resultForm.grade">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+          <option>F</option>
+        </select>
+      </label>
+
+      <label>
+        Remarks
+        <input type="text" name="remarks" placeholder="Good" [(ngModel)]="resultForm.remarks" />
+      </label>
+
+      <button type="submit">{{ editingResultId ? 'Update Result' : 'Save Result' }}</button>
+    </form>
+
+    <div class="result-list">
+      <div class="list-header">
+        <div>
+          <h2>Result List</h2>
+          <span>{{ filteredResults.length }} records showing</span>
+        </div>
+
+        <input type="search" name="search" placeholder="Search result" [(ngModel)]="searchTerm" />
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student</th>
+              <th>Exam ID</th>
+              <th>Marks</th>
+              <th>Grade</th>
+              <th>Remarks</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (result of filteredResults; track result.id) {
+              <tr>
+                <td>{{ result.id }}</td>
+                <td>{{ getStudentName(result.studentId) }}</td>
+                <td>{{ result.examId }}</td>
+                <td>{{ result.marksObtained }}</td>
+                <td>
+                  <span class="status" [class.fail]="result.grade === 'F'">
+                    {{ result.grade }}
+                  </span>
+                </td>
+                <td>{{ result.remarks }}</td>
+                <td>
+                  <div class="actions">
+                    <button type="button" (click)="editResult(result)">Edit</button>
+                    <button type="button" class="danger" (click)="deleteResult(result.id)">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7" class="empty-state">No result records found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,103 @@
+<section class="classes-page">
+  <div class="page-header">
+    <div>
+      <p>Class Management</p>
+      <h1>Classes</h1>
+    </div>
+
+    <button type="button" (click)="resetForm()">Add Class</button>
+  </div>
+
+  <div class="summary-grid">
+    <div>
+      <span>Total Classes</span>
+      <strong>{{ classes.length }}</strong>
+    </div>
+
+    <div>
+      <span>Showing</span>
+      <strong>{{ filteredClasses.length }}</strong>
+    </div>
+
+    <div>
+      <span>Sections</span>
+      <strong>{{ classes.length }}</strong>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <p class="empty-state">{{ errorMessage }}</p>
+  }
+
+  <div class="content-grid">
+    <form class="class-form" (ngSubmit)="saveClass()">
+      <div class="form-title">
+        <h2>{{ editingClassId ? 'Edit Class' : 'Add Class' }}</h2>
+
+        @if (editingClassId) {
+          <button type="button" class="ghost-button" (click)="resetForm()">Cancel</button>
+        }
+      </div>
+
+      <label>
+        Class Name
+        <input type="text" name="className" placeholder="Class 4" [(ngModel)]="classForm.className" required />
+      </label>
+
+      <label>
+        Section
+        <select name="section" [(ngModel)]="classForm.section">
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+        </select>
+      </label>
+
+      <button type="submit">{{ editingClassId ? 'Update Class' : 'Save Class' }}</button>
+    </form>
+
+    <div class="class-list">
+      <div class="list-header">
+        <div>
+          <h2>Class List</h2>
+          <span>{{ filteredClasses.length }} records showing</span>
+        </div>
+
+        <input type="search" name="search" placeholder="Search class" [(ngModel)]="searchTerm" />
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Class</th>
+              <th>Section</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (item of filteredClasses; track item.id) {
+              <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.className }}</td>
+                <td>{{ item.section }}</td>
+                <td>
+                  <div class="actions">
+                    <button type="button" (click)="editClass(item)">Edit</button>
+                    <button type="button" class="danger" (click)="deleteClass(item.id)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="empty-state">No classes found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

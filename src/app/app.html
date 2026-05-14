@@ -1,0 +1,57 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-row">
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Toggle navigation"
+        [attr.aria-expanded]="isMenuOpen"
+        (click)="toggleMenu()"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a
+        class="brand"
+        routerLink="/dashboard"
+        aria-label="Bright Future School dashboard"
+        (click)="closeMenu()"
+      >
+        <span class="brand-mark">BF</span>
+        <span>
+          <strong>Bright Future School</strong>
+          <small>Management System</small>
+        </span>
+      </a>
+    </div>
+
+    <div class="topbar-actions">
+      <span class="user-chip">Admin</span>
+      <button type="button">Logout</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar" [class.open]="isMenuOpen" aria-label="Main navigation">
+      <nav>
+        @for (item of navItems; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }"
+            (click)="closeMenu()"
+          >
+            <span class="nav-icon">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="page">
+      <router-outlet />
+    </main>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<section class="fees-page">
+  <div class="page-header">
+    <div>
+      <p>Fee Management</p>
+      <h1>Fees</h1>
+    </div>
+
+    <button type="button" (click)="resetForm()">Add Fee</button>
+  </div>
+
+  @if (errorMessage) {
+    <p class="empty-state">{{ errorMessage }}</p>
+  }
+
+  <div class="summary-grid">
+    <div>
+      <span>Total Amount</span>
+      <strong>{{ totalAmount }}</strong>
+    </div>
+
+    <div>
+      <span>Paid Records</span>
+      <strong>{{ paidFees }}</strong>
+    </div>
+
+    <div>
+      <span>Pending Records</span>
+      <strong>{{ pendingFees }}</strong>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <form class="fee-form" (ngSubmit)="saveFee()">
+      <div class="form-title">
+        <h2>{{ editingFeeId ? 'Edit Fee' : 'Add Fee' }}</h2>
+
+        @if (editingFeeId) {
+          <button type="button" class="ghost-button" (click)="resetForm()">Cancel</button>
+        }
+      </div>
+
+      <label>
+        Student
+        <select name="studentId" [(ngModel)]="feeForm.studentId">
+          @for (student of students; track student.id) {
+            <option [ngValue]="student.id">{{ student.name }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Amount
+        <input type="number" name="amount" placeholder="5000" [(ngModel)]="feeForm.amount" required />
+      </label>
+
+      <label>
+        Due Date
+        <input type="date" name="dueDate" [(ngModel)]="feeForm.dueDate" required />
+      </label>
+
+      <label>
+        Paid Date
+        <input type="date" name="paidDate" [(ngModel)]="feeForm.paidDate" />
+      </label>
+
+      <label>
+        Status
+        <select name="status" [(ngModel)]="feeForm.status">
+          <option>Paid</option>
+          <option>Pending</option>
+        </select>
+      </label>
+
+      <button type="submit">{{ editingFeeId ? 'Update Fee' : 'Save Fee' }}</button>
+    </form>
+
+    <div class="fee-list">
+      <div class="list-header">
+        <div>
+          <h2>Fee List</h2>
+          <span>{{ filteredFees.length }} records showing</span>
+        </div>
+
+        <input type="search" name="search" placeholder="Search fee" [(ngModel)]="searchTerm" />
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student</th>
+              <th>Amount</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (fee of filteredFees; track fee.id) {
+              <tr>
+                <td>{{ fee.id }}</td>
+                <td>{{ getStudentName(fee.studentId) }}</td>
+                <td>{{ fee.amount }}</td>
+                <td>{{ fee.dueDate.slice(0, 10) }}</td>
+                <td>
+                  <span class="status" [class.pending]="fee.status === 'Pending'">
+                    {{ fee.status }}
+                  </span>
+                </td>
+                <td>
+                  <div class="actions">
+                    <button type="button" (click)="editFee(fee)">Edit</button>
+                    <button type="button" class="danger" (click)="deleteFee(fee.id)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-state">No fee records found.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

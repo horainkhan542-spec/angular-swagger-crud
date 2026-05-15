@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: bright-future-school
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bright-future-school-db
+          property: connectionString
+
+databases:
+  - name: bright-future-school-db
+    plan: free

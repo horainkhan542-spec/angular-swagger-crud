@@ -1,6 +1,6 @@
 # Render Deployment
 
-If Render asks for a card or paid plan, use `MONSTERASP_DEPLOYMENT.md` instead. That route is free ASP.NET Core hosting with Supabase as the database.
+If Render asks for a card or paid plan, use `RAILWAY_DEPLOYMENT.md` if you already have Railway credits/project access, or `MONSTERASP_DEPLOYMENT.md` for free ASP.NET Core hosting with Supabase as the database.
 
 This project is prepared for a single Render deployment:
 

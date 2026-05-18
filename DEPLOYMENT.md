@@ -1,6 +1,6 @@
 # Render Deployment
 
-If Render asks for a card or paid plan, use `NETLIFY_SUPABASE_DEPLOYMENT.md` for a free static Angular website that calls Supabase directly. `RAILWAY_DEPLOYMENT.md` and `MONSTERASP_DEPLOYMENT.md` are backup options.
+If Render asks for a card or paid plan, use `FREE_FRONTEND_BACKEND_DEPLOYMENT.md` when you want both frontend and backend online. Use `NETLIFY_SUPABASE_DEPLOYMENT.md` only for a frontend that calls Supabase directly.
 
 This project is prepared for a single Render deployment:
 

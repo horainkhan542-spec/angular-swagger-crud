@@ -1,5 +1,7 @@
 # Render Deployment
 
+If Render asks for a card or paid plan, use `MONSTERASP_DEPLOYMENT.md` instead. That route is free ASP.NET Core hosting with Supabase as the database.
+
 This project is prepared for a single Render deployment:
 
 - Angular frontend is built inside Docker.

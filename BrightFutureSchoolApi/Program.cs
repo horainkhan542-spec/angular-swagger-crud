@@ -55,6 +55,7 @@ if (allowedOrigins is { Length: > 0 })
 
 app.UseAuthorization();
 
+app.MapGet("/healthz", () => Results.Ok("ok"));
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 

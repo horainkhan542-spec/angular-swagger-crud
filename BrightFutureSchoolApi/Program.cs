@@ -6,6 +6,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var allowedOrigins = builder.Configuration["ALLOWED_ORIGINS"]?
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+if (allowedOrigins is { Length: > 0 })
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("ConfiguredOrigins", policy =>
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+    });
+}
+
 var connectionString =
     ConvertDatabaseUrl(builder.Configuration["DATABASE_URL"])
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
@@ -33,6 +47,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+if (allowedOrigins is { Length: > 0 })
+{
+    app.UseCors("ConfiguredOrigins");
+}
 
 app.UseAuthorization();
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface SchoolClass {
   id: number;
@@ -59,54 +60,60 @@ export interface Result {
 
 @Injectable({ providedIn: 'root' })
 export class SchoolApiService {
+  private readonly apiBaseUrl = environment.apiBaseUrl.replace(/\/$/, '');
+
   constructor(private readonly http: HttpClient) {}
 
+  private api(path: string): string {
+    return `${this.apiBaseUrl}${path}`;
+  }
+
   getClasses(): Observable<SchoolClass[]> {
-    return this.http.get<SchoolClass[]>('/api/Class');
+    return this.http.get<SchoolClass[]>(this.api('/api/Class'));
   }
 
   addClass(item: SchoolClass): Observable<SchoolClass> {
-    return this.http.post<SchoolClass>('/api/Class', item);
+    return this.http.post<SchoolClass>(this.api('/api/Class'), item);
   }
 
   updateClass(item: SchoolClass): Observable<void> {
-    return this.http.put<void>(`/api/Class/${item.id}`, item);
+    return this.http.put<void>(this.api(`/api/Class/${item.id}`), item);
   }
 
   deleteClass(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Class/${id}`);
+    return this.http.delete<void>(this.api(`/api/Class/${id}`));
   }
 
   getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>('/api/Student');
+    return this.http.get<Student[]>(this.api('/api/Student'));
   }
 
   addStudent(item: Student): Observable<Student> {
-    return this.http.post<Student>('/api/Student', item);
+    return this.http.post<Student>(this.api('/api/Student'), item);
   }
 
   updateStudent(item: Student): Observable<void> {
-    return this.http.put<void>(`/api/Student/${item.id}`, item);
+    return this.http.put<void>(this.api(`/api/Student/${item.id}`), item);
   }
 
   deleteStudent(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Student/${id}`);
+    return this.http.delete<void>(this.api(`/api/Student/${id}`));
   }
 
   getTeachers(): Observable<Teacher[]> {
-    return this.http.get<Teacher[]>('/api/Teacher');
+    return this.http.get<Teacher[]>(this.api('/api/Teacher'));
   }
 
   addTeacher(item: Teacher): Observable<Teacher> {
-    return this.http.post<Teacher>('/api/Teacher', item);
+    return this.http.post<Teacher>(this.api('/api/Teacher'), item);
   }
 
   updateTeacher(item: Teacher): Observable<void> {
-    return this.http.put<void>(`/api/Teacher/${item.id}`, item);
+    return this.http.put<void>(this.api(`/api/Teacher/${item.id}`), item);
   }
 
   deleteTeacher(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Teacher/${id}`);
+    return this.http.delete<void>(this.api(`/api/Teacher/${id}`));
   }
 
   ensureTeachers(): Observable<Teacher[]> {
@@ -157,66 +164,66 @@ export class SchoolApiService {
   }
 
   getSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>('/api/Subject');
+    return this.http.get<Subject[]>(this.api('/api/Subject'));
   }
 
   addSubject(item: Subject): Observable<Subject> {
-    return this.http.post<Subject>('/api/Subject', item);
+    return this.http.post<Subject>(this.api('/api/Subject'), item);
   }
 
   updateSubject(item: Subject): Observable<void> {
-    return this.http.put<void>(`/api/Subject/${item.subjectId}`, item);
+    return this.http.put<void>(this.api(`/api/Subject/${item.subjectId}`), item);
   }
 
   deleteSubject(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Subject/${id}`);
+    return this.http.delete<void>(this.api(`/api/Subject/${id}`));
   }
 
   getAttendance(): Observable<Attendance[]> {
-    return this.http.get<Attendance[]>('/api/Attendance');
+    return this.http.get<Attendance[]>(this.api('/api/Attendance'));
   }
 
   addAttendance(item: Attendance): Observable<Attendance> {
-    return this.http.post<Attendance>('/api/Attendance', item);
+    return this.http.post<Attendance>(this.api('/api/Attendance'), item);
   }
 
   updateAttendance(item: Attendance): Observable<void> {
-    return this.http.put<void>(`/api/Attendance/${item.attendanceId}`, item);
+    return this.http.put<void>(this.api(`/api/Attendance/${item.attendanceId}`), item);
   }
 
   deleteAttendance(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Attendance/${id}`);
+    return this.http.delete<void>(this.api(`/api/Attendance/${id}`));
   }
 
   getFees(): Observable<Fee[]> {
-    return this.http.get<Fee[]>('/api/Fee');
+    return this.http.get<Fee[]>(this.api('/api/Fee'));
   }
 
   addFee(item: Fee): Observable<Fee> {
-    return this.http.post<Fee>('/api/Fee', item);
+    return this.http.post<Fee>(this.api('/api/Fee'), item);
   }
 
   updateFee(item: Fee): Observable<void> {
-    return this.http.put<void>(`/api/Fee/${item.id}`, item);
+    return this.http.put<void>(this.api(`/api/Fee/${item.id}`), item);
   }
 
   deleteFee(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Fee/${id}`);
+    return this.http.delete<void>(this.api(`/api/Fee/${id}`));
   }
 
   getResults(): Observable<Result[]> {
-    return this.http.get<Result[]>('/api/Result');
+    return this.http.get<Result[]>(this.api('/api/Result'));
   }
 
   addResult(item: Result): Observable<Result> {
-    return this.http.post<Result>('/api/Result', item);
+    return this.http.post<Result>(this.api('/api/Result'), item);
   }
 
   updateResult(item: Result): Observable<void> {
-    return this.http.put<void>(`/api/Result/${item.id}`, item);
+    return this.http.put<void>(this.api(`/api/Result/${item.id}`), item);
   }
 
   deleteResult(id: number): Observable<void> {
-    return this.http.delete<void>(`/api/Result/${id}`);
+    return this.http.delete<void>(this.api(`/api/Result/${id}`));
   }
 }

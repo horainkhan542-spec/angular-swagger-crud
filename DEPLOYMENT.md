@@ -21,12 +21,41 @@ After deployment, open the web service URL. The Angular app and API will both ru
 
 ## Important Free-Tier Note
 
-Render free web services sleep after inactivity, so the first request after a pause can take around a minute. Render free PostgreSQL databases expire after 30 days, so use Neon or Supabase for a longer-lived free database.
+Render free web services sleep after inactivity, so the first request after a pause can take around a minute. Render free PostgreSQL databases expire after 30 days, so use Neon or Supabase for a longer-lived free database. push to 
 
-To use Neon or Supabase instead, set the web service environment variable:
+## Use Supabase As The Database
+
+Supabase is used here as the PostgreSQL database. It does not host the Angular/ASP.NET app by itself, so the website link should still come from Render or another app host.
+
+1. Open the Supabase project.
+2. Go to **Project Settings** > **Database**.
+3. Copy the pooled connection string. It usually looks like:
+
+```text
+postgresql://postgres.PROJECT_REF:PASSWORD@aws-0-REGION.pooler.supabase.com:6543/postgres
+```
+
+4. In Render, open the `bright-future-school` web service.
+5. Go to **Environment** and set:
 
 ```text
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DATABASE
 ```
 
-Then remove or ignore the free database created by the Blueprint.
+6. Redeploy the service.
+
+The backend automatically runs Entity Framework migrations on startup, so the school tables will be created in Supabase when the deployed API starts.
+
+Then remove or ignore the free database created by the Blueprint. If you are deploying Angular separately from the ASP.NET API, set `ALLOWED_ORIGINS` on the API service to the Angular website URL, for example:
+
+```text
+ALLOWED_ORIGINS=https://your-angular-site.vercel.app
+```
+
+In that separate-hosting setup, also update `src/environments/environment.prod.ts` before building Angular:
+
+```ts
+export const environment = {
+  apiBaseUrl: 'https://your-api-service.onrender.com',
+};
+```
